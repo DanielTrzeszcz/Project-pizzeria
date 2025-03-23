@@ -63,7 +63,7 @@
       thisProduct.getElements(); // Pobranie referencji do elementów DOM
       thisProduct.initAccordion(); // Wywołanie metody inicjalizującej akordeon
       thisProduct.initOrderForm(); // Wywołanie metody inicjalizującej formularz zamówienia
-      thisProduct.processOrder(); // Wywołanie metody przetwarzającej zamówienie
+      thisProduct.processOrder(); // Wywołanie metody przetwarzającej zamówienia
 
       console.log('new Product:', thisProduct);
     }
@@ -93,6 +93,9 @@
       thisProduct.formInputs = thisProduct.form.querySelectorAll(select.all.formInputs);
       thisProduct.cartButton = thisProduct.element.querySelector(select.menuProduct.cartButton);
       thisProduct.priceElem = thisProduct.element.querySelector(select.menuProduct.priceElem);
+
+      // Dodanie referencji do kontenera obrazków
+      thisProduct.imageWrapper = thisProduct.element.querySelector(select.menuProduct.imageWrapper);
     }
 
     initAccordion() {
@@ -174,6 +177,17 @@
           // Jeśli opcja nie jest zaznaczona, ale jest domyślna, zmniejsz cenę
           else if (!optionSelected && option.default) {
             price -= option.price;
+          }
+
+          // Znajdowanie obrazka odpowiadającego opcji
+          const optionImage = thisProduct.imageWrapper.querySelector(`.${paramId}-${optionId}`);
+          if (optionImage) {
+            // Pokazanie lub ukrycie obrazka na podstawie wyboru opcji
+            if (optionSelected) {
+              optionImage.classList.add(classNames.menuProduct.imageVisible);
+            } else {
+              optionImage.classList.remove(classNames.menuProduct.imageVisible);
+            }
           }
         }
       }
