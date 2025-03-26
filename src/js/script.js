@@ -52,6 +52,73 @@
     menuProduct: Handlebars.compile(document.querySelector(select.templateOf.menuProduct).innerHTML),
   };
 
+  class AmountWidget {
+    constructor(element) {
+      const thisWidget = this;
+      
+      thisWidget.getElements(element);
+      
+      // Nowa logika inicjalizacji wartości
+      const initialValue = thisWidget.input.value 
+        ? parseInt(thisWidget.input.value) 
+        : settings.amountWidget.defaultValue;
+      
+      thisWidget.setValue(initialValue);
+      thisWidget.initActions();
+    }
+  
+    getElements(element) {
+      const thisWidget = this;
+      thisWidget.element = element;
+      thisWidget.input = thisWidget.element.querySelector(select.widgets.amount.input);
+      thisWidget.linkDecrease = thisWidget.element.querySelector(select.widgets.amount.linkDecrease);
+      thisWidget.linkIncrease = thisWidget.element.querySelector(select.widgets.amount.linkIncrease);
+    }
+  
+    setValue(value) {
+      const thisWidget = this;
+      const newValue = parseInt(value);
+  
+      if(newValue !== thisWidget.value 
+        && !isNaN(newValue)
+        && newValue >= settings.amountWidget.defaultMin
+        && newValue <= settings.amountWidget.defaultMax
+      ) {
+        thisWidget.value = newValue;
+        thisWidget.input.value = thisWidget.value;
+        thisWidget.announce();
+      } else {
+        thisWidget.input.value = thisWidget.value;
+      }
+    }
+  
+    announce() {
+      const thisWidget = this;
+      const event = new Event('updated', {
+        bubbles: true
+      });
+      thisWidget.element.dispatchEvent(event);
+    }
+  
+    initActions() {
+      const thisWidget = this;
+  
+      thisWidget.input.addEventListener('change', function() {
+        thisWidget.setValue(thisWidget.input.value);
+      });
+  
+      thisWidget.linkDecrease.addEventListener('click', function(event) {
+        event.preventDefault();
+        thisWidget.setValue(thisWidget.value - 1);
+      });
+  
+      thisWidget.linkIncrease.addEventListener('click', function(event) {
+        event.preventDefault();
+        thisWidget.setValue(thisWidget.value + 1);
+      });
+    }
+  }
+
   class Product {
     constructor(id, data) {
       const thisProduct = this;
@@ -59,131 +126,113 @@
       thisProduct.id = id;
       thisProduct.data = data;
 
-      thisProduct.renderInMenu(); // Wywołanie metody renderującej produkt
-      thisProduct.getElements(); // Pobranie referencji do elementów DOM
-      thisProduct.initAccordion(); // Wywołanie metody inicjalizującej akordeon
-      thisProduct.initOrderForm(); // Wywołanie metody inicjalizującej formularz zamówienia
-      thisProduct.processOrder(); // Wywołanie metody przetwarzającej zamówienia
+      thisProduct.renderInMenu();
+      thisProduct.getElements();
+      thisProduct.initAccordion();
+      thisProduct.initOrderForm();
+      thisProduct.initAmountWidget();
+      thisProduct.processOrder();
 
-      console.log('new Product:', thisProduct);
+      // console.log('new Product:', thisProduct);
     }
 
     renderInMenu() {
       const thisProduct = this;
-
-      // 1. Generowanie kodu HTML na podstawie szablonu Handlebars
       const generatedHTML = templates.menuProduct(thisProduct.data);
-
-      // 2. Tworzenie elementu DOM na podstawie wygenerowanego HTML
       thisProduct.element = utils.createDOMFromHTML(generatedHTML);
-
-      // 3. Znajdowanie kontenera menu na stronie
       const menuContainer = document.querySelector(select.containerOf.menu);
-
-      // 4. Wstawienie stworzonego elementu DOM do kontenera menu
       menuContainer.appendChild(thisProduct.element);
     }
 
     getElements() {
       const thisProduct = this;
 
-      // Pobranie referencji do elementów DOM
       thisProduct.accordionTrigger = thisProduct.element.querySelector(select.menuProduct.clickable);
       thisProduct.form = thisProduct.element.querySelector(select.menuProduct.form);
       thisProduct.formInputs = thisProduct.form.querySelectorAll(select.all.formInputs);
       thisProduct.cartButton = thisProduct.element.querySelector(select.menuProduct.cartButton);
       thisProduct.priceElem = thisProduct.element.querySelector(select.menuProduct.priceElem);
-
-      // Dodanie referencji do kontenera obrazków
       thisProduct.imageWrapper = thisProduct.element.querySelector(select.menuProduct.imageWrapper);
+      thisProduct.amountWidgetElem = thisProduct.element.querySelector(select.menuProduct.amountWidget);
+
+       console.log('Product elements:', thisProduct);
     }
 
     initAccordion() {
       const thisProduct = this;
-
-      // Dodanie nasłuchiwacza zdarzeń z anonimową funkcją jako handlerem
-      thisProduct.accordionTrigger.addEventListener('click', function (event) {
-        event.preventDefault(); // Zapobieganie domyślnej akcji
-
-        // Znajdowanie aktywnego produktu
+      thisProduct.accordionTrigger.addEventListener('click', function(event) {
+        event.preventDefault();
         const activeProduct = document.querySelector(select.all.menuProductsActive);
-
-        // Jeśli istnieje aktywny produkt i nie jest to bieżący produkt, usuń klasę active
         if (activeProduct && activeProduct !== thisProduct.element) {
           activeProduct.classList.remove(classNames.menuProduct.wrapperActive);
         }
-
-        // Przełączanie klasy active na bieżącym produkcie
         thisProduct.element.classList.toggle(classNames.menuProduct.wrapperActive);
+        
+        // console.log('Accordion toggled for product:', thisProduct.id);
       });
     }
 
     initOrderForm() {
       const thisProduct = this;
 
-      console.log('initOrderForm');
+      // console.log('Initializing order form for:', thisProduct.id);
 
-      // Nasłuchiwanie zdarzenia 'submit' na formularzu
-      thisProduct.form.addEventListener('submit', function (event) {
-        event.preventDefault(); // Blokowanie domyślnej akcji (wysłanie formularza)
-        thisProduct.processOrder(); // Przetwarzanie zamówienia
+      thisProduct.form.addEventListener('submit', function(event) {
+        event.preventDefault();
+        thisProduct.processOrder();
       });
 
-      // Nasłuchiwanie zdarzenia 'change' na polach formularza
-      for (let input of thisProduct.formInputs) {
-        input.addEventListener('change', function () {
-          thisProduct.processOrder(); // Przetwarzanie zamówienia
+      for(let input of thisProduct.formInputs) {
+        input.addEventListener('change', function() {
+          thisProduct.processOrder();
         });
       }
 
-      // Nasłuchiwanie zdarzenia 'click' na przycisku "Dodaj do koszyka"
-      thisProduct.cartButton.addEventListener('click', function (event) {
-        event.preventDefault(); // Blokowanie domyślnej akcji (przejście do linku)
-        thisProduct.processOrder(); // Przetwarzanie zamówienia
+      thisProduct.cartButton.addEventListener('click', function(event) {
+        event.preventDefault();
+        thisProduct.processOrder();
+      });
+    }
+
+    initAmountWidget() {
+      const thisProduct = this;
+      
+      thisProduct.amountWidget = new AmountWidget(thisProduct.amountWidgetElem);
+      
+      // Nasłuchiwanie zdarzenia 'updated' z widgetu ilości
+      thisProduct.amountWidgetElem.addEventListener('updated', function() {
+        thisProduct.processOrder();
       });
     }
 
     processOrder() {
       const thisProduct = this;
-
-      console.log('processOrder');
-
-      // Przekształcenie formularza w obiekt
       const formData = utils.serializeFormToObject(thisProduct.form);
-      console.log('formData', formData);
+      
+      // console.log('Form data:', formData);
+      // console.log('Processing order for:', thisProduct.id);
 
-      // Ustawienie ceny na domyślną cenę produktu
       let price = thisProduct.data.price;
 
-      // Dla każdej kategorii (param)...
-      for (let paramId in thisProduct.data.params) {
-        // Określenie wartości parametru, np. paramId = 'toppings', param = { label: 'Toppings', type: 'checkboxes'... }
+      for(let paramId in thisProduct.data.params) {
         const param = thisProduct.data.params[paramId];
-        console.log(paramId, param);
+        // console.log('Parameter:', paramId, param);
 
-        // Dla każdej opcji w tej kategorii
-        for (let optionId in param.options) {
-          // Określenie wartości opcji, np. optionId = 'olives', option = { label: 'Olives', price: 2, default: true }
+        for(let optionId in param.options) {
           const option = param.options[optionId];
-          console.log(optionId, option);
+          // console.log('Option:', optionId, option);
 
-          // Sprawdzenie, czy opcja jest zaznaczona
           const optionSelected = formData[paramId] && formData[paramId].includes(optionId);
 
-          // Jeśli opcja jest zaznaczona i nie jest domyślna, zwiększ cenę
-          if (optionSelected && !option.default) {
+          if(optionSelected && !option.default) {
             price += option.price;
-          }
-          // Jeśli opcja nie jest zaznaczona, ale jest domyślna, zmniejsz cenę
-          else if (!optionSelected && option.default) {
+          } else if(!optionSelected && option.default) {
             price -= option.price;
           }
 
-          // Znajdowanie obrazka odpowiadającego opcji
           const optionImage = thisProduct.imageWrapper.querySelector(`.${paramId}-${optionId}`);
-          if (optionImage) {
-            // Pokazanie lub ukrycie obrazka na podstawie wyboru opcji
-            if (optionSelected) {
+          if(optionImage) {
+            if(optionSelected) {
               optionImage.classList.add(classNames.menuProduct.imageVisible);
             } else {
               optionImage.classList.remove(classNames.menuProduct.imageVisible);
@@ -191,40 +240,35 @@
           }
         }
       }
-
-      // Aktualizacja wyświetlanej ceny
-      thisProduct.priceElem.innerHTML = price;
+ // Mnożenie ceny przez ilość sztuk
+ price *= thisProduct.amountWidget.value;
+    
+ // Aktualizacja wyświetlanej ceny
+ thisProduct.priceElem.innerHTML = price;
     }
   }
 
   const app = {
-    init: function () {
+    init: function() {
       const thisApp = this;
-      console.log('*** App starting ***');
-      console.log('thisApp:', thisApp);
-      console.log('classNames:', classNames);
-      console.log('settings:', settings);
-      console.log('templates:', templates);
-
-      // Inicjalizacja danych
+      
+      // console.log('App initialization started');
       thisApp.initData();
-
-      // Inicjalizacja menu
       thisApp.initMenu();
     },
 
-    initData: function () {
+    initData: function() {
       const thisApp = this;
-
       thisApp.data = dataSource;
+      
+      // console.log('Data initialized:', thisApp.data);
     },
 
-    initMenu: function () {
+    initMenu: function() {
       const thisApp = this;
-
-      console.log('thisApp.data:', thisApp.data);
-
-      for (let productData in thisApp.data.products) {
+      
+      // console.log('Menu initialization started');
+      for(let productData in thisApp.data.products) {
         new Product(productData, thisApp.data.products[productData]);
       }
     },
