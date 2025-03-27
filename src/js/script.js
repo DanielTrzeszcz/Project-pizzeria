@@ -1,4 +1,4 @@
-/* global Handlebars, utils,  */
+/* global Handlebars, utils */
 
 {
   'use strict';
@@ -218,6 +218,9 @@
   
       thisCart.products = [];
       thisCart.deliveryFee = settings.cart.defaultDeliveryFee;
+      thisCart.totalNumber = 0;
+      thisCart.subtotalPrice = 0;
+      thisCart.totalPrice = 0;
       
       thisCart.getElements(element);
       thisCart.initActions();
@@ -308,8 +311,8 @@
       
       thisCart.dom.productList.innerHTML = '';
       
-      let totalNumber = 0;
-      let subtotalPrice = 0;
+      thisCart.totalNumber = 0;
+      thisCart.subtotalPrice = 0;
       
       for(let product of thisCart.products) {
         const generatedHTML = templates.cartProduct(product);
@@ -319,23 +322,40 @@
         new CartProduct(product, generatedDOM);
         thisCart.dom.productList.appendChild(generatedDOM);
         
-        totalNumber += product.amount;
-        subtotalPrice += product.price;
+        thisCart.totalNumber += product.amount;
+        thisCart.subtotalPrice += product.price;
       }
       
-      const totalPrice = subtotalPrice + thisCart.deliveryFee;
+      thisCart.totalPrice = thisCart.subtotalPrice + thisCart.deliveryFee;
       
-      thisCart.dom.totalNumber.innerHTML = totalNumber;
-      thisCart.dom.subtotalPrice.innerHTML = subtotalPrice.toFixed(2);
+      thisCart.dom.totalNumber.innerHTML = thisCart.totalNumber;
+      thisCart.dom.subtotalPrice.innerHTML = thisCart.subtotalPrice.toFixed(2);
       thisCart.dom.deliveryFee.innerHTML = thisCart.deliveryFee.toFixed(2);
       
       for(let priceElem of thisCart.dom.totalPrice) {
-        priceElem.innerHTML = totalPrice.toFixed(2);
+        priceElem.innerHTML = thisCart.totalPrice.toFixed(2);
       }
     }
   
     sendOrder() {
       const thisCart = this;
+      
+      // Najpierw aktualizujemy właściwości
+      thisCart.update();
+
+      // Przygotowanie obiektu payload
+      const payload = {
+        address: thisCart.dom.address.value.trim(),
+        phone: thisCart.dom.phone.value.trim(),
+        totalPrice: parseFloat(thisCart.totalPrice),
+        subtotalPrice: parseFloat(thisCart.subtotalPrice),
+        totalNumber: parseInt(thisCart.totalNumber),
+        deliveryFee: parseFloat(thisCart.deliveryFee),
+        products: [] // Na razie pusta tablica
+      };
+
+      console.log('Payload to send:', payload);
+
       const url = settings.db.url + '/' + settings.db.orders;
     
       // Walidacja danych
@@ -344,21 +364,7 @@
         return;
       }
     
-      // Przygotowanie danych
-      const payload = {
-        phone: thisCart.dom.phone.value.trim(),
-        address: thisCart.dom.address.value.trim(),
-        totalPrice: parseFloat(thisCart.dom.totalPrice[0].textContent),
-        deliveryFee: thisCart.deliveryFee,
-        products: thisCart.products.map(product => ({
-          product: product.id.split('-')[0],
-          amount: product.amount,
-          price: product.price
-        })),
-        createdAt: new Date().toISOString()
-      };
-    
-      // Opcje żądania
+      // Opcje żądania HTTP
       const options = {
         method: 'POST',
         headers: {
@@ -381,8 +387,22 @@
         })
         .then(data => {
           console.log('Order saved:', data);
-          alert(`Thank you! Your order #${data.id} has been placed.`);
           
+          // Powiadomienie użytkownika
+          const notification = document.createElement('div');
+          notification.classList.add('order-notification');
+          notification.innerHTML = `
+            <p>Thank you! Your order #${data.id} has been placed.</p>
+            <p>We'll contact you shortly.</p>
+          `;
+          document.body.appendChild(notification);
+          
+          setTimeout(() => notification.classList.add('show'), 10);
+          setTimeout(() => {
+            notification.classList.remove('show');
+            setTimeout(() => notification.remove(), 500);
+          }, 5000);
+    
           // Czyszczenie koszyka
           thisCart.products = [];
           thisCart.dom.form.reset();
@@ -390,11 +410,16 @@
         })
         .catch(error => {
           console.error('Error:', error);
-          alert(`Order failed: ${error.message}. Please try again.`);
+          thisCart.dom.formSubmit.disabled = false;
+          thisCart.dom.formSubmit.textContent = 'Try Again';
+          alert(`Order failed: ${error.message}. Please check your connection and try again.`);
         })
         .finally(() => {
-          thisCart.dom.formSubmit.disabled = false;
-          thisCart.dom.formSubmit.textContent = 'Order';
+          setTimeout(() => {
+            if (thisCart.dom.formSubmit.textContent === 'Try Again') return;
+            thisCart.dom.formSubmit.disabled = false;
+            thisCart.dom.formSubmit.textContent = 'Order';
+          }, 2000);
         });
     }
   }
@@ -565,25 +590,30 @@
 
     initMenu: function() {
       const thisApp = this;
-      const url = settings.db.url + '/' + settings.db.products; // Endpoint API
+      const url = settings.db.url + '/' + settings.db.products; 
 
       fetch(url)
         .then(function(rawResponse){
+          if(!rawResponse.ok) {
+            throw new Error(`HTTP error! status: ${rawResponse.status}`);
+          }
           return rawResponse.json();
         })
         .then(function(parsedResponse){
           console.log('Pobrane dane:', parsedResponse);
           
-          // Zapisz dane w thisApp.data.products
           thisApp.data.products = parsedResponse;
           
-          // Teraz inicjuj menu
           for(let productData in thisApp.data.products) {
-            new Product(productData, thisApp.data.products[productData]);
+            new Product(thisApp.data.products[productData].id, thisApp.data.products[productData]);
           }
         })
         .catch(function(error){
           console.error('Błąd podczas pobierania danych:', error);
+          const errorElement = document.createElement('div');
+          errorElement.className = 'error-message';
+          errorElement.textContent = 'Failed to load menu. Please try again later.';
+          document.querySelector(select.containerOf.menu).appendChild(errorElement);
         });
     },
 
