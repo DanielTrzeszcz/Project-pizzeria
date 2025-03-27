@@ -58,8 +58,8 @@
   <div id="product-list" class="product-list container"></div>
 
   <script id="template-cart-product" type="text/x-handlebars-template">
-    <li>
-      <div class="widget-amount"> <!-- widget-amount -->
+    <li data-id="{{ id }}"> <!-- Dodajemy data-id -->
+      <div class="widget-amount">
         <a class="btn-quantity btn-quantity--lt" href="#less"><i class="fas fa-minus"></i></a>
         <input class="amount" type="text" value="{{ amount }}">
         <a class="btn-quantity btn-quantity--lt" href="#more"><i class="fas fa-plus"></i></a>
