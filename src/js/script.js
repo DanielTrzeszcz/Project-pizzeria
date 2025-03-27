@@ -298,7 +298,7 @@
     }
 
     sendOrder() {
-      const thisCart = this;
+      const thisCart = this; // eslint-disable-line no-unused-vars
       console.log('Wysyłanie zamówienia...');
     }
   }
