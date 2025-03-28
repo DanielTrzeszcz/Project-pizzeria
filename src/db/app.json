@@ -1,5 +1,8 @@
 {
-    "products":[
+   
+   "orders": [],
+    
+   "products":[
        {
           "id":"cake",
           "class":"small",
@@ -45,10 +48,6 @@
              }
           }
        },
-       {
-        "products": [],
-        "orders": []
-      },
        {
           "id":"pizza",
           "name":"Nonna Alba's Pizza",
@@ -206,4 +205,5 @@
           }
        }
     ]
+    
  }

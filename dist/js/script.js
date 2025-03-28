@@ -339,10 +339,10 @@
   
     sendOrder() {
       const thisCart = this;
-      
-      // Najpierw aktualizujemy właściwości
+    
+      // Aktualizacja danych koszyka
       thisCart.update();
-
+    
       // Przygotowanie obiektu payload
       const payload = {
         address: thisCart.dom.address.value.trim(),
@@ -351,15 +351,22 @@
         subtotalPrice: parseFloat(thisCart.subtotalPrice),
         totalNumber: parseInt(thisCart.totalNumber),
         deliveryFee: parseFloat(thisCart.deliveryFee),
-        products: [] // Na razie pusta tablica
+        products: thisCart.products.map(product => ({
+          id: product.id,
+          name: product.name,
+          amount: product.amount,
+          priceSingle: product.priceSingle,
+          price: product.price,
+          params: product.params
+        }))
       };
-
+    
       console.log('Payload to send:', payload);
-
+    
       const url = settings.db.url + '/' + settings.db.orders;
     
       // Walidacja danych
-      if(!thisCart.dom.phone.value || !thisCart.dom.address.value) {
+      if (!thisCart.dom.phone.value || !thisCart.dom.address.value) {
         alert('Please provide phone number and delivery address!');
         return;
       }
@@ -377,17 +384,17 @@
       thisCart.dom.formSubmit.disabled = true;
       thisCart.dom.formSubmit.textContent = 'Sending...';
     
-      // Wysłanie żądania
+      // Wysłanie zamówienia
       fetch(url, options)
         .then(response => {
-          if(!response.ok) {
+          if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
           }
           return response.json();
         })
         .then(data => {
           console.log('Order saved:', data);
-          
+    
           // Powiadomienie użytkownika
           const notification = document.createElement('div');
           notification.classList.add('order-notification');
@@ -396,7 +403,7 @@
             <p>We'll contact you shortly.</p>
           `;
           document.body.appendChild(notification);
-          
+    
           setTimeout(() => notification.classList.add('show'), 10);
           setTimeout(() => {
             notification.classList.remove('show');
@@ -422,6 +429,7 @@
           }, 2000);
         });
     }
+    
   }
 
   class Product {
@@ -446,6 +454,11 @@
       thisProduct.element = utils.createDOMFromHTML(generatedHTML);
       const menuContainer = document.querySelector(select.containerOf.menu);
       menuContainer.appendChild(thisProduct.element);
+      if (!thisProduct.data.name || !thisProduct.data.price) {
+        thisProduct.element.remove();
+        return;
+      }
+      
     }
 
     getElements() {
