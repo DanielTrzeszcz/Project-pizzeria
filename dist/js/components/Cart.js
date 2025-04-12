@@ -8,8 +8,6 @@ class Cart{
       thisCart.products = [];
       thisCart.getElements(element);
       thisCart.initActions();
-      //thisCart.add(menuProduct);
-      //console.log('new cart', thisCart);
     }
 
     getElements(element){
@@ -47,12 +45,10 @@ class Cart{
 
     add(menuProduct){
       const thisCart = this;
-      //console.log('adding product', menuProduct);
       const generatedHTML = templates.cartProduct(menuProduct);
       const generatedDom = utils.createDOMFromHTML(generatedHTML);
       thisCart.dom.productList.appendChild(generatedDom);
       thisCart.products.push(new CartProduct(menuProduct, generatedDom));
-      //console.log('thisCard.products',thisCart.products);
       thisCart.update();
 
     }
@@ -74,7 +70,6 @@ class Cart{
         thisCart.totalPrice = 0;
       }
 
-      //console.log('subTotalPrice: ', subTotalPrice);
 
       thisCart.dom.deliveryFee.innerHTML = deliveryFee;
       thisCart.dom.subTotalPrice.innerHTML = subTotalPrice;
@@ -90,7 +85,6 @@ class Cart{
 
       const productIndex = thisCart.products.indexOf(cartProduct);
       thisCart.products.splice(productIndex,1);
-      console.log('remove products');
       thisCart.update();
     }
 
@@ -111,7 +105,6 @@ class Cart{
       for(let prod of thisCart.products) {
         payload.products.push(prod.getData());
       }
-      console.log('payload',payload);
 
       const options = {
         method: 'POST',

@@ -4,7 +4,6 @@ import AmountWidget from "./AmountWidget.js";
 class CartProduct {
     constructor(menuProduct,element){
       const thisCartProduct = this;
-      //console.log('menuProduct: ', menuProduct.id);
 
       thisCartProduct.id = menuProduct.id;
       thisCartProduct.name = menuProduct.name;
@@ -58,7 +57,6 @@ class CartProduct {
       thisCartProduct.dom.remove.addEventListener('click', function(event){
         event.preventDefault();
         thisCartProduct.remove();
-        console.log('remove');
       });
 
     }

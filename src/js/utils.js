@@ -52,11 +52,13 @@ Handlebars.registerHelper('ifEquals', function(arg1, arg2, options) {
 Handlebars.registerHelper('joinValues', function(input, options) {
   return Object.values(input).join(options.fn(this));
 });
+
 utils.queryParams = function(params){
   return Object.keys(params)
     .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
     .join('&');
 };
+
 utils.numberToHour = function(number){
   return (Math.floor(number) % 24) + ':' + (number % 1 * 60 + '').padStart(2, '0');
 };
@@ -76,4 +78,5 @@ utils.addDays = function(dateStr, days){
   dateObj.setDate(dateObj.getDate() + days);
   return dateObj;
 };
+
 export default utils;
