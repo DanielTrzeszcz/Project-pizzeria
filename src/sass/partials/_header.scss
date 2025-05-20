@@ -1,7 +1,11 @@
+@use "sass:color";
+@use "settings";
+@use "typography";
+
 .header {
-  padding: ($base-size * 5) 0 ($base-size * 8) 0;
-  background: $color-dark;
-  color: $color-light;
+  padding: (settings.$base-size * 5) 0 (settings.$base-size * 8) 0;
+  background: settings.$color-dark;
+  color: settings.$color-light;
 
   &__wrapper {
     position: relative;
@@ -14,22 +18,22 @@
   line-height: 1;
 
   &__title {
-    margin: 0 0 $base-size 0;
-    font-size: ($base-size * 4);
-    font-family: $font-header;
-    font-weight: $font-light;
+    margin: 0 0 settings.$base-size 0;
+    font-size: (settings.$base-size * 4);
+    font-family: settings.$font-header;
+    font-weight: settings.$font-light;
     text-transform: uppercase;
 
     span {
-      font-weight: $font-bold;
+      font-weight: settings.$font-bold;
     }
 
   }
 
   &__subtitle {
     margin: 0;
-    font-size: ($base-size * 1.5);
-    font-weight: $font-light;
+    font-size: (settings.$base-size * 1.5);
+    font-weight: settings.$font-light;
     font-style: italic;
   }
 
@@ -37,22 +41,22 @@
 
 .main-nav {
   position: absolute;
-  @include flex(row, flex-start, flex-start);
-  bottom: ($base-size * -8);
+  @include settings.flex(row, flex-start, flex-start);
+  bottom: (settings.$base-size * -8);
 
   a {
     @extend .h2;
-    color: $color-main;
+    color: settings.$color-main;
     text-decoration: none;
-    margin-right: ($base-size * 2);
+    margin-right: (settings.$base-size * 2);
     text-align: center;
-    padding: $base-size ($base-size * 2);
-    background: darken($color-dark, 5%);
-    border-top-left-radius: $radius;
-    border-top-right-radius: $radius;
+    padding: settings.$base-size (settings.$base-size * 2);
+    background: color.adjust(settings.$color-dark, $lightness: -5%);
+    border-top-left-radius: settings.$radius;
+    border-top-right-radius: settings.$radius;
 
     &.active {
-      background: lighten($color-dark, 75%);
+      background: color.adjust(settings.$color-dark, $lightness: 75%);
     }
 
   }

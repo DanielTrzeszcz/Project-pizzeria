@@ -1,17 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Pizzeria</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-  <link href="https://fonts.googleapis.com/css?family=Lato:400,300i,700%7COswald:300,500,700&amp;subset=latin-ext" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Lato:400,300i,700%7COswald:300,500,700&amp;subset=latin-ext"
+    rel="stylesheet">
   <link href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" rel="stylesheet">
   <link rel="stylesheet" href="vendor/range-slider.min.css">
   <link rel="icon" href="/path/to/favicon.ico" type="image/x-icon">
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://unpkg.com/flickity@2/dist/flickity.min.css">
 </head>
+
 <body>
 
   <header class="header">
@@ -22,9 +26,10 @@
           <h2 class="logo__subtitle">the best homemade Italian food</h2>
         </div>
         <div class="main-nav">
+          <a href="#home">Home</a>
           <a href="#order">Order</a>
           <a href="#booking">Booking</a>
-      </div>
+        </div>
         <div id="cart" class="cart">
           <div class="cart__summary">
             <span class="cart__total-number">0</span>
@@ -63,6 +68,9 @@
   </header>
 
   <div id="pages">
+    <section id="home">
+      <div id="home-page" class="home-page container"></div>
+    </section>
     <section id="order">
       <div id="product-list" class="product-list container"></div>
     </section>
@@ -71,9 +79,110 @@
     </section>
   </div>
 
+  <script id="template-home" type="text/x-handlebars-template">
+    <div class="home-quicklinks">
+      <a href="order"><div class="home-quicklinks__orderonline">
+        <p class="home-quicklink__title">Order online</p>
+        <p class="home-quicklink__subtitle">Delicious food deliver to your home</p>
+      </div></a>
+      <a href="booking"><div class="home-quicklinks__bookatable">
+        <p class="home-quicklink__title">Book a table</p>
+        <p class="home-quicklink__subtitle">Reserve a table in our restaurant</p>
+      </div></a>
+      <div class="home-quicklinks__openinghours">
+        <p class="home-quicklink__title">Opening hours</p>
+        <p class="home-quicklink__subtitle">TUE-SUN, 12PM-12AM</p>
+      </div>
+    </div>
+    <div class="carousel">
+      <div class="carousel-cell">
+        <div class="carousel__content">
+          <div class="carousel__imgwrapper">
+            <img src="images/home/pizza-3.jpg" alt="Pizza">
+          </div>
+          <div class="carousel__contentwrapper">
+            <p class="carousel__testimonial-title">Best service</p>
+            <p class="carousel__testimonial-description">Bla bla bla.</p>
+            <p class="carousel__testimonial-author">- Davinci</p>
+          </div>
+        </div>
+      </div>
+      <div class="carousel-cell">
+        <div class="carousel__content">
+          <div class="carousel__imgwrapper">
+            <img src="images/home/pizza-3.jpg" alt="Pizza">
+          </div>
+          <div class="carousel__contentwrapper">
+            <p class="carousel__testimonial-title">Great Venue</p>
+            <p class="carousel__testimonial-description">blah test</p>
+            <p class="carousel__testimonial-author">- Tomek</p>
+          </div>
+        </div>
+      </div>
+      <div class="carousel-cell">
+        <div class="carousel__content">
+          <div class="carousel__imgwrapper">
+            <img src="images/home/pizza-3.jpg" alt="Pizza">
+          </div>
+          <div class="carousel__contentwrapper">
+            <p class="carousel__testimonial-title">Pizza </p>
+            <p class="carousel__testimonial-description">Karuuuzela</p>
+            <p class="carousel__testimonial-author">- Tomek</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="instagram">
+      <div class="instagram__images">
+        <div class="instagram__images-image-wrapper">
+          <img src="images/home/pizza-4.jpg" alt="Instagram 1">
+          <div class="overlay">
+            <i class="fas fa-heart"></i>
+            <i class="fas fa-share-nodes"></i>
+          </div>
+        </div>
+        <div class="instagram__images-image-wrapper">
+          <img src="images/home/pizza-5.jpg" alt="Instagram 1">
+          <div class="overlay">
+            <i class="fas fa-heart"></i>
+            <i class="fas fa-share-nodes"></i>
+          </div>
+        </div>
+        <div class="instagram__images-image-wrapper">
+          <img src="images/home/pizza-6.jpg" alt="Instagram 1">
+          <div class="overlay">
+            <i class="fas fa-heart"></i>
+            <i class="fas fa-share-nodes"></i>
+          </div>
+        </div>
+        <div class="instagram__images-image-wrapper">
+          <img src="images/home/pizza-7.jpg" alt="Instagram 1">
+          <div class="overlay">
+            <i class="fas fa-heart"></i>
+            <i class="fas fa-share-nodes"></i>
+          </div>
+        </div>
+        <div class="instagram__images-image-wrapper">
+          <img src="images/home/pizza-8.jpg" alt="Instagram 1">
+          <div class="overlay">
+            <i class="fas fa-heart"></i>
+            <i class="fas fa-share-nodes"></i>
+          </div>
+        </div>
+        <div class="instagram__images-image-wrapper">
+          <img src="images/home/pizza-9.jpg" alt="Instagram 1">
+          <div class="overlay">
+            <i class="fas fa-heart"></i>
+            <i class="fas fa-share-nodes"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </script>
+
   <script id="template-cart-product" type="text/x-handlebars-template">
     <li>
-      <div class="widget-amount"> <!-- widget-amount -->
+      <div class="widget-amount">
         <a class="btn-quantity btn-quantity--lt" href="#less"><i class="fas fa-minus"></i></a>
         <input class="amount" type="text" value="{{ amount }}">
         <a class="btn-quantity btn-quantity--lt" href="#more"><i class="fas fa-plus"></i></a>
@@ -100,24 +209,23 @@
   </script>
 
   <script id="template-menu-product" type="text/x-handlebars-template">
-    <article class="product"> <!-- product -->
-
+    <article class="product">
         <header class="product__header">
           <h3 class="product__name no-spacing">{{ name }} <i class="fas fa-chevron-down product__icon"></i></h3>
           <p class="product__base-price no-spacing">${{ price }}</p>
         </header>
-        <div class="product__description"> <!-- description -->
+        <div class="product__description">
           <p>{{{ description }}}</p>
-        </div> <!-- .description -->
-        <div class="product__wrapper"> <!-- details -->
+        </div>
+        <div class="product__wrapper">
           <form class="product__order">
-            <ul class="product__params"> <!-- params -->
+            <ul class="product__params">
               {{#each params as |param paramId| }}
               {{#ifEquals type "checkboxes"}}
-              <li> <!-- checkboxes -->
+              <li>
                 <h3 class="product__params-title">{{{ label }}}</h3>
                 {{#each options}}
-                <div class="checkbox"> <!-- checkbox -->
+                <div class="checkbox">
                   <label>
                     <input type="checkbox" name="{{ paramId }}" value="{{ @key }}" id="{{ @key }}" {{#if default}}checked{{/if}}>
                     <span class="checkbox__checkmark"></span>
@@ -128,10 +236,10 @@
               </li>
               {{/ifEquals}}
               {{#ifEquals type "radios"}}
-              <li> <!-- radios -->
+              <li>
                 <h3 class="product__params-title">{{{ label }}}</h3>
                 {{#each options}}
-                <div class="checkbox checkbox--round"> <!-- radio -->
+                <div class="checkbox checkbox--round">
                   <label>
                     {{{ label }}} (${{{ price }}})
                     <input type="radio" name="{{ paramId }}" value="{{ @key }}" id="{{ @key }}" {{#if default}}checked{{/if}}>
@@ -142,7 +250,7 @@
               </li>
               {{/ifEquals}}
               {{#ifEquals type "select"}}
-              <li> <!-- select -->
+              <li>
                 <h3 class="product__params-title">{{{ label }}}</h3>
                 <select name="{{ paramId }}">
                   {{#each options}}
@@ -153,8 +261,8 @@
               {{/ifEquals}}
               {{/each}}
             </ul>
-            <div class="amount"> <!-- controls -->
-              <div class="widget-amount"> <!-- widget-amount -->
+            <div class="amount">
+              <div class="widget-amount">
                 <h3 class="product__params-title">Select quantity</h3>
                 <a class="btn-quantity" href="#less"><i class="fas fa-minus"></i></a>
                 <input class="amount" type="text">
@@ -163,91 +271,89 @@
               <p class="product__total-price">
                 Total: $<span class="price">{{{ price }}}</span>
               </p>
-              <div> <!-- add-to-cart -->
+              <div>
                 <a class="btn-primary" href="#add-to-cart">Add to cart</a>
               </div>
             </div>
           </form>
-          <div class="product__images {{ class }}"> <!-- images -->
+          <div class="product__images {{ class }}">
             {{#each images}}
             {{{ this }}}
             {{/each}}
           </div>
         </div>
-
-    </article> <!-- .product -->
-  </script>
-    <script id="template-booking-widget" type="text/x-handlebars-template">
-      <div class="booking-widget">
-        <h2 class="page__title no-spacing">Book a table</h2>
-        <form class="booking-form">
-          <div class="time-picker">
-            <div class="date-picker">
-              <label class="booking-option-title">Pick a date</label>
-              <input type="text" name="date">
-            </div>
-            <div class="hour-picker range-slider">
-                <div class="output"></div>
-                <label class="booking-option-title">Pick a time</label>
-              <input type="range" name="hour" value="12" min="12" max="24" step="0.5">
-            </div>
-          </div>
-          <div class="floor-plan">
-            <div class="object entry">entry</div>
-            <div class="object bar">bar</div>
-            <div class="object table" data-table="1">table-1</div>
-            <div class="object table table--round" data-table="2">table-2</div>
-            <div class="object table" data-table="3">table-3</div>
-          </div>
-          <div class="booking-options"> <!-- options -->
-            <label class="booking-option-title"> <!-- option-row -->
-              People
-              <div class="widget-amount people-amount"> <!-- widget-amount -->
-                <a class="btn-quantity" href="#less"><i class="fas fa-minus"></i></a>
-                <input class="amount" type="text" name="people" value="1">
-                <a class="btn-quantity" href="#more"><i class="fas fa-plus"></i></a>
-              </div>
-            </label>
-            <label class="booking-option-title"> <!-- option-row -->
-              Hours
-              <div class="widget-amount hours-amount"> <!-- widget-amount -->
-                <a class="btn-quantity" href="#less"><i class="fas fa-minus"></i></a>
-                <input class="amount" type="text" name="hours" value="1">
-                <a class="btn-quantity" href="#more"><i class="fas fa-plus"></i></a>
-              </div>
-            </label>
-            <div> <!-- option-row -->
-              <span class="booking-option-title">Starters</span>
-              <div class="checkbox"> <!-- checkbox -->
-                <label>
-                  <input type="checkbox" name="starter" value="water">
-                  <span class="checkbox__checkmark"></span>
-                  Water
-                </label>
-              </div>
-              <div class="checkbox"> <!-- checkbox -->
-                <label>
-                  <input type="checkbox" name="starter" value="bread">
-                  <span class="checkbox__checkmark"></span>
-                  Bread
-                </label>
-              </div>
-            </div>
-          </div>
-          <div class="order-confirmation">
-            <input type="tel" name="phone" placeholder="Your phone">
-            <input type="text" name="address" placeholder="Your address">
-            <button type="submit" class="btn-secondary">Book table</button>
-          </div>
-        </form>
-      </div>
-
+    </article>
   </script>
 
-  <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
+  <script id="template-booking-widget" type="text/x-handlebars-template">
+    <div class="booking-widget">
+      <h2 class="page__title no-spacing">Book a table</h2>
+      <form class="booking-form">
+        <div class="time-picker">
+          <div class="date-picker">
+            <label class="booking-option-title">Pick a date</label>
+            <input type="text" name="date">
+          </div>
+          <div class="hour-picker range-slider">
+              <div class="output"></div>
+              <label class="booking-option-title">Pick a time</label>
+            <input type="range" name="hour" value="12" min="12" max="24" step="0.5">
+          </div>
+        </div>
+        <div class="floor-plan">
+          <div class="object entry">entry</div>
+          <div class="object bar">bar</div>
+          <div class="object table" data-table="1">table-1</div>
+          <div class="object table table--round" data-table="2">table-2</div>
+          <div class="object table" data-table="3">table-3</div>
+        </div>
+        <div class="booking-options">
+          <label class="booking-option-title">
+            People
+            <div class="widget-amount people-amount">
+              <a class="btn-quantity" href="#less"><i class="fas fa-minus"></i></a>
+              <input class="amount" type="text" name="people" value="1">
+              <a class="btn-quantity" href="#more"><i class="fas fa-plus"></i></a>
+            </div>
+          </label>
+          <label class="booking-option-title">
+            Hours
+            <div class="widget-amount hours-amount">
+              <a class="btn-quantity" href="#less"><i class="fas fa-minus"></i></a>
+              <input class="amount" type="text" name="hours" value="1">
+              <a class="btn-quantity" href="#more"><i class="fas fa-plus"></i></a>
+            </div>
+          </label>
+          <div>
+            <span class="booking-option-title">Starters</span>
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" name="starter" value="water">
+                <span class="checkbox__checkmark"></span>
+                Water
+              </label>
+            </div>
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" name="starter" value="bread">
+                <span class="checkbox__checkmark"></span>
+                Bread
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="order-confirmation">
+          <input type="tel" name="phone" placeholder="Your phone">
+          <input type="text" name="address" placeholder="Your address">
+          <button type="submit" class="btn-secondary">Book table</button>
+        </div>
+      </form>
+    </div>
+  </script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.1.0/handlebars.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <script src="vendor/range-slider.min.js" type="module"></script>
   <script src="./js/app.js" type="module"></script>
+  <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
 </body>
 </html>

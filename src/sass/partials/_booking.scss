@@ -1,3 +1,7 @@
+@use "sass:color";
+@use "settings";
+@use "typography";
+
 #pages {
     > * {
       display: none;
@@ -17,33 +21,33 @@
   }
 
   .booking-wrapper {
-    margin: ($base-size * 3.5) auto;
-    padding: ($base-size * 6) ($base-size * 4);
-    background: $color-light;
-    border-bottom: 1px solid lighten($color-dark, 70%);
-    border-radius: $radius;
+    margin: (settings.$base-size * 3.5) auto;
+    padding: (settings.$base-size * 6) (settings.$base-size * 4);
+    background: settings.$color-light;
+    border-bottom: 1px solid color.adjust(settings.$color-dark, $lightness: 70%);
+    border-radius: settings.$radius;
   }
 
   .booking-option-title {
     @extend .h2;
     display: block;
-    margin: 0 0 ($base-size * 2) 0;
+    margin: 0 0 (settings.$base-size * 2) 0;
 
     > .widget-amount {
-      margin: ($base-size * 2) 0 0 0;
+      margin: (settings.$base-size * 2) 0 0 0;
     }
 
   }
 
   .page__title {
     @extend .h1;
-    margin: 0 0 ($base-size * 4) 0;
+    margin: 0 0 (settings.$base-size * 4) 0;
     text-align: center;
   }
 
   .time-picker {
-    @include flex(row, flex-start, space-between);
-    margin: 0 0 ($base-size * 4) 0;
+    @include settings.flex(row, flex-start, space-between);
+    margin: 0 0 (settings.$base-size * 4) 0;
   }
 
   .hour-picker {
@@ -58,10 +62,10 @@
   }
 
   .rangeSlider {
-    top: $base-size;
-    background: lighten($color-dark, 70%);
+    top: settings.$base-size;
+    background: color.adjust(settings.$color-dark, $lightness: 70%);
     box-shadow: none;
-    height: $base-size;
+    height: settings.$base-size;
 
     &__handle {
       box-shadow: none;
@@ -74,16 +78,16 @@
       }
 
       &__horizontal {
-        width: ($base-size * 2);
-        height: ($base-size * 2);
+        width: (settings.$base-size * 2);
+        height: (settings.$base-size * 2);
         top: -6px;
-        background: $color-dark;
+        background: settings.$color-dark;
       }
 
     }
 
     &__fill {
-      background: $color-success;
+      background: settings.$color-success;
       transition: width 100ms;
       transition-timing-function: cubic-bezier(0, 1, 0, 1);
       box-shadow: none;
@@ -92,7 +96,7 @@
 
   .flatpickr-day {
     &.disabled {
-      color: lighten($color-dark, 60%);
+      color: color.adjust(settings.$color-dark, $lightness: 60%);
     }
   }
 
@@ -100,10 +104,10 @@
     position: relative;
     width: 320px;
     height: 320px;
-    border: 12px solid $color-dark;
-    margin: ($base-size * 4) auto;
+    border: 12px solid settings.$color-dark;
+    margin: (settings.$base-size * 4) auto;
     background: linear-gradient(to right, #e9dfc4 0%, #e9dfc4 1%, #ede3c8 2%, #ede3c8 24%, #ebddc3 25%, #e9dfc4 48%, #ebddc3 49%, #e6d8bd 52%, #e6d8bd 53%, #e9dbc0 54%, #e6d8bd 55%, #e6d8bd 56%, #e9dbc0 57%, #e6d8bd 58%, #e6d8bd 73%, #e9dbc0 74%, #e9dbc0 98%, #ebddc3 100%);
-    background-size: ($base-size * 3);
+    background-size: (settings.$base-size * 3);
     background-repeat: repeat;
 
     > * {
@@ -127,7 +131,7 @@
       transform: translate(-50%, -50%);
       box-shadow: none;
       background: #ede3c8;
-      border: 1px solid $color-dark;
+      border: 1px solid settings.$color-dark;
       border-width: 0 6px 0 6px;
     }
 
@@ -159,7 +163,7 @@
 
       &.booked {
         cursor: not-allowed;
-        color: lighten($color-dark, 40%);
+        color: color.adjust(settings.$color-dark, $lightness: 40%);
 
         &::after {
           position: absolute;
@@ -168,14 +172,14 @@
           height: 100%;
           left: 0;
           top: 0;
-          background: $color-dark;
+          background: settings.$color-dark;
           opacity: 0.4;
         }
 
       }
 
       &.selected {
-        color: lighten($color-dark, 40%);
+        color: color.adjust(settings.$color-dark, $lightness: 40%);
 
         &::after {
           position: absolute;
@@ -212,6 +216,6 @@
   }
 
   .booking-options {
-    @include flex(row, flex-start, space-between);
-    margin: ($base-size * 4) auto;
+    @include settings.flex(row, flex-start, space-between);
+    margin: (settings.$base-size * 4) auto;
   }

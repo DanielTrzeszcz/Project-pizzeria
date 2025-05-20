@@ -1,15 +1,18 @@
+@use "sass:color";
+@use "settings";
+
 *, *::before, *::after {
   box-sizing: border-box;
 }
 
 body {
   margin: 0;
-  background: lighten($color-dark, 75%);
-  font-family: $font-text;
+  background: color.adjust(settings.$color-dark, $lightness: 75%);
+  font-family: settings.$font-text;
   font-size: 14px;
   line-height: 1.7;
-  font-weight: $font-normal;
-  color: $color-dark;
+  font-weight: settings.$font-normal;
+  color: settings.$color-dark;
 }
 
 .container {

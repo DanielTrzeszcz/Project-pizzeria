@@ -1,0 +1,162 @@
+@use "sass:color";
+@use "settings";
+@use "typography";
+
+#home .container {
+  background: settings.$color-light;
+}
+
+.home-quicklinks {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  margin: 10px auto;
+
+}
+
+.home-quicklinks div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 120px;
+  text-align: center;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+}
+
+.home-quicklinks__orderonline {
+  background-image: url('../images/home/pizza-1.jpg');
+  width: 327px;
+  margin-top: 10px;
+  margin-right: 5px;
+}
+
+.home-quicklinks__bookatable {
+  background-image: url('../images/home/pizza-2.jpg');
+  width: 320px;
+  margin-top: 10px;
+  margin-bottom: 5px;
+  margin-left: 5px;
+}
+
+.home-quicklinks__openinghours {
+  background: settings.$color-red;
+  width: 658px;
+  margin-top: 5px;
+}
+
+.home-quicklink__title {
+  text-transform: uppercase;
+  font-family: settings.$font-header;
+  color: settings.$color-light;
+  font-size: 26px;
+}
+
+.home-quicklink__subtitle {
+  color: settings.$color-light;
+}
+
+.home-quicklinks__orderonline .home-quicklink__title, .home-quicklinks__bookatable .home-quicklink__title {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: transform 0.5s ease-in-out;
+}
+
+
+.home-quicklinks__orderonline .home-quicklink__subtitle, .home-quicklinks__bookatable .home-quicklink__subtitle {
+  position: absolute;
+  top: 60%;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out, top 0.5s ease-in-out;
+}
+
+.home-quicklinks__orderonline:hover .home-quicklink__title,
+.home-quicklinks__bookatable:hover .home-quicklink__title {
+  transform: translateY(-80%);
+}
+
+.home-quicklinks__orderonline:hover .home-quicklink__subtitle,
+.home-quicklinks__bookatable:hover .home-quicklink__subtitle {
+  opacity: 1;
+  top: 60%;
+}
+
+
+.instagram__images {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  align-content: center;
+  width: 100%;
+}
+
+.instagram__images-image-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 210px;
+  height: 200px;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 15px;
+}
+
+.instagram__images-image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease-in-out;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.overlay svg {
+  color: settings.$color-light;
+  font-size: 24px;
+  cursor: pointer;
+  transition: color 0.3s ease-in-out, transform 0.2s ease-in-out;
+}
+
+.overlay svg:hover {
+  color: settings.$color-main;
+  transform: scale(1.2);
+}
+
+.instagram__images-image-wrapper:hover .overlay {
+  opacity: 1;
+}
+
+.instagram__images-image-wrapper:hover img {
+  transform: scale(1.1);
+}
+
+.instagram__view-more-link-wrapper {
+  padding-top: 15px;
+}
+
+.instagram__view-more-link {
+  color: settings.$color-main;
+  text-decoration: underline;
+}

@@ -3,6 +3,7 @@ export const select = {
       menuProduct: '#template-menu-product',
       cartProduct: '#template-cart-product',
       bookingWidget: '#template-booking-widget',
+      home: '#template-home',
     },
     containerOf: {
       menu: '#product-list',
@@ -10,6 +11,8 @@ export const select = {
       pages: '#pages',
       booking: '.booking-wrapper',
       tables: '.floor-plan',
+      home: '#home',
+      carousel: '.carousel',
     },
     all: {
       menuProducts: '#product-list > .product',
@@ -52,6 +55,12 @@ export const select = {
       phone: '.booking-form [name="phone"]',
       address: '.booking-form [name="address"]',
       starters: '.booking-form [name="starter"]',
+    },
+    home: {
+      links: '.home-quicklinks a',
+      galleryTile: '.home-gallery div',
+      galleryTiles: '.home-gallery',
+      homeCarousel: '.main-carousel',
     },
     nav: {
         links: '.main-nav a',
@@ -109,7 +118,7 @@ export  const classNames = {
       defaultDeliveryFee: 20,
     },
     db: {
-      url: '//' + window.location.hostname + (window.location.hostname=='localhost' ? ':3131' : ''),
+      url: '//localhost:3131',
       products: 'products',
       orders: 'orders',
       bookings: 'bookings',
@@ -135,6 +144,7 @@ export const templates = {
     menuProduct: Handlebars.compile(document.querySelector(select.templateOf.menuProduct).innerHTML),
     cartProduct: Handlebars.compile(document.querySelector(select.templateOf.cartProduct).innerHTML),
     bookingWidget: Handlebars.compile(document.querySelector(select.templateOf.bookingWidget).innerHTML),
+    home: Handlebars.compile(document.querySelector(select.templateOf.home).innerHTML),
   };
 
 export default settings;

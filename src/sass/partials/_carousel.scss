@@ -1,0 +1,50 @@
+@use "settings";
+
+.carousel {
+    background: settings.$color-light;
+    min-height: 200px;
+    display: block;
+    margin: 60px 0;
+  }
+
+  .flickity-viewport {
+    min-height: 130px;
+  }
+
+  .carousel-cell {
+    width: 640px;
+    max-width: 100%;
+  }
+
+  .carousel__content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .carousel__imgwrapper img {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+  }
+
+  .flickity-page-dots {
+    position: relative;
+    margin-top: 40px;
+    bottom: 0px;
+  }
+
+  .carousel__testimonial-title {
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .carousel__contentwrapper {
+    padding-left: 50px;
+  }
+
+  .carousel__testimonial-author {
+    font-style: italic;
+    margin-top: 8px;
+  }
